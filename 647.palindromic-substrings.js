@@ -8,32 +8,20 @@
  * @return {number}
  */
 /*
-思路：设dp[i]为长度为i的字符串的回文子串数，si为第i个字母,则dp[i] = dp[i - 1] + 以si结尾的回文子串数
+思路：dp[i][j]表示以s[i]开头，s[j]结尾的字符串是否为回文字串，则
+dp[i][j] = s[i] === s[j] && (j - i < 3 || dp[i + 1][j - 1])
 */
 var countSubstrings = function(s) {
   if(!s) return 0;
   let len = s.length,
-      dp = new Array(len).fill(0);
-  dp[0] = 1;
-  for(let i = 1; i < len; i++) {
-      let count = 0;
-      for(let j = 0; j <= i; j++) {
-          if(isPalidrom(s.slice(j, i + 1))) count++;
-      }
-      dp[i] = dp[i - 1] + count;
+      dp = new Array(len).fill(null).map(v => [ false ]),
+      res = 0;
+  for(let i = len - 1; i >= 0; i--) {
+    for(let j = i; j < len; j++) {
+      dp[i][j] = s[i] === s[j] && (j - i < 3 || dp[i + 1][j - 1]);
+      if(dp[i][j]) res++;
+    }
   }
-  
-  function isPalidrom(str) {
-      if(str.length <= 1) return true;
-      let l = 0,
-          r = str.length - 1;
-      while(l < r) {
-          if(str[l] !== str[r]) return false;
-          l++;
-          r--;
-      }
-      return true;
-  }
-  return dp[len - 1];
+  return res;
 };
 
