@@ -8,18 +8,15 @@
  * @return {void} Do not return anything, modify nums in-place instead.
  */
 /**
- * 思路：排序后将后面的一半大数插入前面的数中
+ * 思路：遍历数组，偶数位不满足nums[i] <= nums[i + 1]交换，
+ * 奇数位不满足nums[i] >= nums[i + 1]交换
  */
 var wiggleSort = function(nums) {
-  let len = nums.length;
-  if(len < 2) return;
-  nums.sort((a, b) => a - b);
-  let index = ((len - 1) >> 1) + 1,
-      pos = 1;
-  for(let i = index; i < len; i++) {
-    let num = nums.splice(i, 1);
-    nums.splice(pos, 0, num[0]);
-    pos += 2;
+  if(nums.length < 2) return;
+  for(let i = 0; i < nums.length - 1; i++) {
+    if(i % 2 === 0 && nums[i] > nums[i + 1] || i % 2 === 1 && nums[i] < nums[i + 1]) {
+      [nums[i], nums[i + 1]] = [nums[i + 1], nums[i]];  
+    }
   }
 };
 
