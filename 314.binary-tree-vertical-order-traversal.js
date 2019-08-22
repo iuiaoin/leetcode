@@ -22,7 +22,9 @@ var verticalOrder = function(root) {
   if(!root) return [];
   let res = [];
       queue = [ [root, 0] ],
-      map = { 0: [ root.val ] };
+      map = { 0: [ root.val ] },
+      min = 0,
+      max = 0;
   while (queue.length) {
     let arr = queue.shift(),
         node = arr[0],
@@ -30,12 +32,17 @@ var verticalOrder = function(root) {
     if(node.left) {
       queue.push([node.left, col - 1]);
       map[col - 1] = (map[col - 1] || []).concat(node.left.val);
+      min = Math.min(min, col - 1);
     }
     if(node.right) {
       queue.push([node.right, col + 1]);
       map[col + 1] = (map[col + 1] || []).concat(node.right.val);
+      max = Math.max(max, col + 1);
     }
   }
-  return Object.entries(map).sort((a, b) => a[0] - b[0]).map(v => v[1]);
+  for(let i = min; i <= max; i++) {
+    res.push(map[i]);
+  }
+  return res;
 };
 
