@@ -15,15 +15,15 @@
  */
 var killProcess = function(pid, ppid, kill) {
   let queue = [ kill ],
-      res = [];
+      res = [],
+      map = {};
+  for(let i = 0; i < ppid.length; i++) {
+    map[ppid[i]] = (map[ppid[i]] || []).concat(pid[i]);
+  }
   while(queue.length) {
     let val = queue.shift();
     res.push(val);
-    for(let i = 0; i < ppid.length; i++) {
-      if(ppid[i] === val) {
-        queue.push(pid[i]);
-      }
-    }
+    queue = queue.concat(map[val] || []);
   }
   return res;
 };
