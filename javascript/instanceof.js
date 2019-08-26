@@ -1,3 +1,5 @@
+// 手动实现instanceof
+
 /**
  * a instanceof Object
  * 判断Object.prototype是否在a的原型链上

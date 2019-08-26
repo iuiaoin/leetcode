@@ -1,3 +1,5 @@
+// 手动实现call、apply、bind
+
 /**
  * call
  * 1. 判断this防止直接调用
