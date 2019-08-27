@@ -15,20 +15,21 @@
  * @return {boolean}
  */
 /**
- * 层序遍历，标记节点的位置pos，遍历完之后比较pos和节点总数是否相等
+ * 层序遍历，当遇到有的节点时，如果出现过null返回false，否则将hasNull置为true, 若遍历完返回true
  */
 var isCompleteTree = function (root) {
   if (!root) return true;
-  let queue = [[root, 1]],
-      count = 0,
-      pos;
+  let queue = [root],
+      hasNull = false;
   while (queue.length) {
-    count++;
-    let arr = queue.shift(),
-        node = arr[0];
-    pos = arr[1];
-    if(node.left) queue.push([node.left, pos * 2]);
-    if(node.right) queue.push([node.right, pos * 2 + 1]);
+    let node = queue.shift();
+    if (node) {
+      if (hasNull) return false;
+      queue.push(node.left);
+      queue.push(node.right);
+    } else {
+      hasNull = true;
+    }
   }
-  return pos === count;
+  return true;
 };
