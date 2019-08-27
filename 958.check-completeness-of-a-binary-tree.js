@@ -15,7 +15,7 @@
  * @return {boolean}
  */
 /**
- * 层序遍历，当遇到null值是判断是否是在最后一层且右边全为null值
+ * 层序遍历，当遇到有的节点时，如果出现过null返回false，如果是最后一层返回true，否则如果出现了null返回false
  */
 var isCompleteTree = function(root) {
   if(!root) return true;
