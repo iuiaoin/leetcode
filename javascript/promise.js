@@ -10,7 +10,7 @@
 //       FULFILLED = 'fulfilled',
 //       REJECTED = 'rejected';
 
-// function Promise1(executor) {
+// function Promise(executor) {
 //   this.state = PENDING;
 //   this.value = null;
 //   this.reason = null;
@@ -49,7 +49,7 @@ const PENDING = 'pending',
       FULFILLED = 'fulfilled',
       REJECTED = 'rejected';
 
-function Promise1(executor) {
+function Promise(executor) {
   this.state = PENDING;
   this.value = null;
   this.reason = null;
@@ -79,7 +79,7 @@ function Promise1(executor) {
   }
 }
 
-Promise1.prototype.then = function(onFulfilled, onRejected) {
+Promise.prototype.then = function(onFulfilled, onRejected) {
   if(typeof onFulfilled !== 'function') {
     onFulfilled = function(value) {
       return value;
@@ -92,7 +92,7 @@ Promise1.prototype.then = function(onFulfilled, onRejected) {
     }
   }
 
-  return new Promise1((resolve, reject) => {
+  return new Promise((resolve, reject) => {
 
     function handle(res) {
       if(res && typeof res.then === 'function') {
@@ -131,7 +131,7 @@ Promise1.prototype.then = function(onFulfilled, onRejected) {
 /**
  * catch 方法
  */
-Promise1.prototype.catch = function (onRejected) {
+Promise.prototype.catch = function (onRejected) {
   return this.then(null, onRejected);
 }
 
@@ -139,7 +139,7 @@ Promise1.prototype.catch = function (onRejected) {
  * finally 方法
  * 不管是resolve还是reject都会调用finally
  */
-Promise1.prototype.finally = function (fn) {
+Promise.prototype.finally = function (fn) {
   return this.then(value => {
     fn();
     return value;
@@ -150,31 +150,31 @@ Promise1.prototype.finally = function (fn) {
 }
 
 /**
- * Promise1.resolve
+ * Promise.resolve
  * 用来直接生成一个处于FULFILLED状态的promise
  */
-Promise1.resolve = function(value) {
-  return new Promise1(resolve => {
+Promise.resolve = function(value) {
+  return new Promise(resolve => {
     resolve(value);
   })
 }
 
 /**
- * Promise1.reject
+ * Promise.reject
  * 用来直接生成一个处于REJECTED状态的promise
  */
-Promise1.reject = function(reason) {
-  return new Promise1((resolve, reject) => {
+Promise.reject = function(reason) {
+  return new Promise((resolve, reject) => {
     reject(reason);
   })
 }
 
 /**
- * Promise1.all
+ * Promise.all
  * 当所有的promise执行完成之后，执行resolve，失败则返回第一个失败的结果并reject
  */
-Promise1.all = function(arr) {
-  return new Promise1((resolve, reject) => {
+Promise.all = function(arr) {
+  return new Promise((resolve, reject) => {
     if(!arr.length) return resolve([]);
     let result = [],
         index = 0;
@@ -191,11 +191,11 @@ Promise1.all = function(arr) {
 }
 
 /**
- * Promise1.race
+ * Promise.race
  * 只要有一个promise执行完成，就执行resolve或reject
  */
-Promise1.race = function(arr) {
-  return new Promise1((resolve, reject) => {
+Promise.race = function(arr) {
+  return new Promise((resolve, reject) => {
     if(!arr.length) return resolve();
     for(let i = 0; i < arr.length; i++) {
       arr[i].then((res) => {
