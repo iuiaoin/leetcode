@@ -45,16 +45,35 @@ function clone(target) {
 }
 
 /**
- * 函数的拷贝
+ * 函数的拷贝, 使用new Function或者eval的方式通过字符串来构造新函数
  * @param {*} target 
  */
 function clone(target) {
-  if(typeof target === 'function') return eval(target.toString());
-  if(typeof target !== 'object' || !target) return target;
   let copy = {};
-  if(Array.isArray(target)) copy = [];
+  if(Array.isArray(target)) {
+    copy = [];
+  } else if(typeof target === 'function') {
+    copy = new Function('return '+ target.toString())();
+  } else if(typeof target !== 'object' || !target) {
+    return target;
+  }
   for(let key in target) {
-    copy[key] = clone(target);
+    copy[key] = clone(target[key]);
+  } 
+  return copy;
+}
+
+function clone(target) {
+  let copy = {};
+  if(Array.isArray(target)) {
+    copy = [];
+  } else if(typeof target === 'function') {
+    eval('copy = ' + target.toString());
+  } else if(typeof target !== 'object' || !target) {
+    return target;
+  }
+  for(let key in target) {
+    copy[key] = clone(target[key]);
   } 
   return copy;
 }
