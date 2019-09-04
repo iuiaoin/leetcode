@@ -19,7 +19,7 @@
  * 思路：利用bst性质寻找到合适的插入点
  */
 var insertIntoBST = function(root, val) {
-  if(!root) return null;
+  if(!root) return new TreeNode(val);
   let node = root;
   while(node) {
     if(val < node.val) {
