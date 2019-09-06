@@ -15,26 +15,24 @@
  * @return {ListNode}
  */
 /**
- * 思路：遍历list将值不重复的节点记录下来，然后组成新的链表
+ * 思路：两个指针pre和cur, 如果cur和cur.next值相等的话cur往后移一位，若pre.next还是cur说明cur是不重复的，
+ * pre = cur，否则的话pre.next = cur.next
  */
 var deleteDuplicates = function(head) {
   if(!head) return null;
-  let map = new Map();
-  while(head) {
-    let val = map.get(head.val) || 0;
-    map.set(head.val, val + 1);
-    head = head.next;
+  let dummy = new ListNode(),
+      pre = dummy,
+      cur = head;
+  dummy.next = head;
+  while(cur) {
+    while(cur.next && cur.val === cur.next.val) cur = cur.next;
+    if(pre.next === cur) {
+      pre = cur;
+    } else {
+      pre.next = cur.next;
+    }
+    cur = cur.next;
   }
-  let list = [];
-  for(let [key, value] of map) {
-    if(value === 1) list.push(new ListNode(key));
-  }
-  if(!list.length) return null;
-  list.reduce((pre, cur) => {
-    pre.next = cur;
-    cur.next = null;
-    return cur;
-  })
-  return list[0];
+  return dummy.next;
 };
 
