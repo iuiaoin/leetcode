@@ -1,6 +1,6 @@
 // 基于 promise 封装的 ajax
 
-function getStringParam(param) {
+function getQueryStr(param) {
   let str = '';
   for (key in param) {
     str += `${key}=${param[key]}&`;
@@ -11,10 +11,10 @@ function getStringParam(param) {
 function ajax(url, method = 'get', param = {}) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    const paramString = getStringParam(param);
-    if (method === 'get' && paramString) {
-      let symbol = url.indexOf('?') !== -1 ? '&' : '?';
-      url += symbol + paramString;
+    const queryStr = getQueryStr(param);
+    if (method === 'get' && queryStr) {
+      let symbol = url.indexOf('?') > -1 ? '&' : '?';
+      url += symbol + queryStr;
     }
 
     xhr.open(method, url);
@@ -49,7 +49,7 @@ function ajax(url, method = 'get', param = {}) {
     }
 
     if(method === 'post') {
-      xhr.send(paramString);
+      xhr.send(queryStr);
     } else {
       xhr.send();
     }
