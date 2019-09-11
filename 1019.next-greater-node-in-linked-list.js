@@ -15,17 +15,21 @@
  * @return {number[]}
  */
 /**
- * 两个指针p,q，p记录遍历到的位置，q寻找next larger number
+ * 思路：将list转化为数组，用栈存储不满足条件(栈空或值大于等于当前遍历到的值)的数组的index，
+ * 满足条件时pop并赋给结果数组
  */
 var nextLargerNodes = function(head) {
   if(!head) return [];
-  let p = head,
-      res = [];
-  while(p) {
-    let q = p.next;
-    while(q && q.val <= p.val) q = q.next;
-    res.push(q ? q.val : 0);
-    p = p.next;
+  let arr = [],
+      stack = [];
+  while(head) {
+    arr.push(head.val);
+    head = head.next;
+  }
+  let res = new Array(arr.length).fill(0);
+  for(let i = 0; i < arr.length; i++) {
+    while(stack.length && arr[stack[stack.length - 1]] < arr[i]) res[stack.pop()] = arr[i];
+    stack.push(i);
   }
   return res;
 };
