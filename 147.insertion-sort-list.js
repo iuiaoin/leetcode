@@ -15,20 +15,21 @@
  * @return {ListNode}
  */
 /**
- * 思路：list转array排序后构造新链表
+ * 思路：构造头节点，通过遍历它来构造新的有序链表
  */
 var insertionSortList = function(head) {
   if(!head) return null;
-  let arr = [];
-  while(head) {
-    arr.push(head.val);
-    head = head.next;
-  }
-  let list = arr.sort((a, b) => a - b).map(v => new ListNode(v));
-  list.reduce((pre, cur) => {
+  let dummy = new ListNode(0),
+      pre = dummy,
+      cur = head;
+  while(cur) {
+    let next = cur.next;
+    while(pre.next && pre.next.val < cur.val) pre = pre.next;
+    cur.next = pre.next;
     pre.next = cur;
-    return cur;
-  })
-  return list[0];
+    pre = dummy;
+    cur = next;
+  }
+  return dummy.next;
 };
 
