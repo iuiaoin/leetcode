@@ -8,28 +8,22 @@
  * @return {boolean}
  */
 /**
- * 思路：
- * 这个问题实际上是要找到一个集合，它们的和等于一个具体的数字，在这里是sum / 2
- * 这是0，1背包问题，对于每个数字可以选或不选
- * state: dp[i][j]表示在0~i中能否找到数字和等于j
- * state transition: dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i]]  (对于num[i]是选或不选))
- * base case: dp[i][0] = true, dp[0][j] = false(j > 0);
+ * 思路：空间优化为一维数组
+ * state: dp[i]表示在数组中能否找到和等于i的集合
+ * state transition: dp[i] = dp[i] || dp[i - nums[j]]
+ * base case: dp[0] = true
+ * line24从右往左遍历的原因，数字只能使用没组合过数字(比如[1,2,5], 不能用3)
  */
-var canPartition = function(nums) {
-  let sum = nums.reduce((pre, cur) => pre + cur, 0),
-      len = nums.length;
-  if(sum % 2) return false;
-  sum >>= 1;
-  let dp = new Array(len + 1).fill(null).map(() => new Array(sum + 1).fill(false));
-  for(let row of dp) {
-    row[0] = true;
-  };
-  for(let i = 1; i < len + 1; i++) {
-    for(let j = 1; j < sum + 1; j++) {
-      dp[i][j] = dp[i - 1][j];
-      if(j >= nums[i]) dp[i][j] = dp[i][j] || dp[i - 1][j - nums[i]];
+var canPartition = function (nums) {
+  let sum = nums.reduce((pre, cur) => pre + cur, 0);
+  if (sum % 2) return false;
+  sum /= 2;
+  let dp = Array(sum + 1).fill(false);
+  dp[0] = true;
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = sum; j >= nums[i]; j--) {   //line 24
+      dp[j] = dp[j] || dp[j - nums[i]];
     }
   }
-  return dp[len][sum];
+  return dp[sum];
 };
-
