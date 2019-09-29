@@ -9,21 +9,22 @@
  * @return {number}
  */
 /**
- * 思路：O(2^n) dfs计算和若等于target则count++
+ * 思路：转化为子集和问题，相当于在nums中找到两个subset,一个全为正P,一个全为负N,sum(P) - sum(N) = target，即 2sum(P) = target + sum(nums)
+ * 最终为：在nums找到一个全为正数的集合P使得 sum(P) = (target + sum(nums)) / 2
+ * 
+ * dp[i] 表示和为i的集合的数量
  */
 var findTargetSumWays = function(nums, S) {
-  let len = nums.length,
-      count = 0;
-  caculate(0, 0);
-  return count;
-
-  function caculate(index, sum) {
-    if(index === len) {
-      if(sum === S) count++;
-    } else {
-      caculate(index + 1, sum + nums[index]);
-      caculate(index + 1, sum - nums[index]);
+  let sum = nums.reduce((pre, cur) => pre + cur, 0);
+  if(sum < S || (S + sum) % 2) return 0;
+  let target = (S + sum) >> 1;
+  let dp = new Array(target + 1).fill(0);
+  dp[0] = 1;
+  for(let i = 0; i < nums.length; i++) {
+    for(let j = target; j >= nums[i]; j--) {
+      dp[j] += dp[j - nums[i]];
     }
   }
+  return dp[target];
 };
 
