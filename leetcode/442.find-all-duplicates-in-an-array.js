@@ -10,19 +10,19 @@
  * @return {number[]}
  */
 /**
- * 思路：遍历array，使用set存储出现过的数字，将重复的数字推入结果中
+ * 思路：不能使用额外space，那么想到使用数组本身来做标记来区分重复数字，因为1 ≤ a[i] ≤ n，所以可以标记nums[nums[i] - 1]为负数，如果发现nums[i] - 1位置上的数字已经为负数，则说明重复了
  */
 var findDuplicates = function(nums) {
-  let res = [],
-      set = new Set();
-  for(let i = 0; i < nums.length; i++) {
-    if(set.has(nums[i])) {
-      res.push(nums[i]);
-    } else {
-      set.add(nums[i]);
-    }
-  }
-  return res;
+ let res = [];
+ for(let i = 0; i < nums.length; i++) {
+   let index = Math.abs(nums[i]) - 1;
+   if(nums[index] < 0) {
+     res.push(Math.abs(nums[i]));
+   } else {
+     nums[index] = -nums[index];
+   }
+ }
+ return res;
 };
 // @lc code=end
 
