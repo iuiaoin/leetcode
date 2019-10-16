@@ -10,22 +10,25 @@
  * @return {number}
  */
 /**
- * 思路：找到所有的3个一组的数对，判断是否可以组成三角形并累加
+ * 思路：先将nums排序，从末尾开始遍历，取len为最长边c，len - 1为次长边b, 0为最短边a,若a + b > c则 0 ~ len - 2都可以为最短边，所以count + len - 1 - 0直至遍历完
  */
 var triangleNumber = function(nums) {
-  let count = 0,
-      len = nums.length;
-  for(let i = 0; i < len - 2; i++) {
-    for(let j = i + 1; j < len - 1; j++) {
-      for(let k = j + 1; k < len; k++) {
-        if(canBeTriangle(nums[i], nums[j], nums[k])) count++;
+  nums.sort((a, b) => a - b);
+  let len = nums.length;
+  let count = 0;
+  for(let i = len - 1; i >= 2; i--) {
+    let l = 0;
+    let r = i - 1;
+    while(l < r) {
+      if(nums[l] + nums[r] > nums[i]) {
+        count += r - l;
+        r--;
+      } else {
+        l++;
       }
     }
   }
   return count;
-  function canBeTriangle(a, b, c) {
-    return a + b > c && Math.abs(a - b) < c;
-  }
 };
 // @lc code=end
 
