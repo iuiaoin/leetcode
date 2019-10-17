@@ -11,20 +11,22 @@
  * @return {number}
  */
 /**
- * 思路：遍历nums，i从1到len，遇到和大于等于s的输出i
+ * 思路：遍历nums，累加数字和sum，如果>=s则使sum从头开始减掉先前的数字，记录长度最小值
  */
 var minSubArrayLen = function(s, nums) {
   let len = nums.length;
-  for(let i = 1; i <= len; i++) {
-    for(let j = 0; j <= len - i; j++) {
-      let sum = 0;
-      for(let k = j; k < j + i; k++) {
-        sum += nums[k];
-      }
-      if(sum >= s) return i;
+  let res = Infinity;
+  let i = 0;
+  let j = 0;
+  let sum = 0;
+  while(i < len) {
+    sum += nums[i++];
+    while(sum >= s) {
+      res = Math.min(res, i - j);
+      sum -= nums[j++];
     }
   }
-  return 0;
+  return res === Infinity ? 0 : res;
 };
 // @lc code=end
 
