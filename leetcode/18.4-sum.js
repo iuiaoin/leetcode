@@ -11,28 +11,38 @@
  * @return {number[][]}
  */
 /**
- * 思路：将数组排序，找出所有的4组数，若等于target推入结果
+ * 思路：在前两位使用正常循环，并跳过重复的数，2-sum 阶段采用双指针，因为是已排序的，大于target r左移，否则l右移
  */
-var fourSum = function(nums, target) {
-  let res = [];
-  let len = nums.length;
-  let set = new Set();
-  nums.sort((a, b) => a - b);
-  for(let i = 0; i < len - 3; i++) {
-    for(let j = i + 1; j < len - 2; j++) {
-      for(let k = j + 1; k < len - 1; k++) {
-        for(let l = k + 1; l < len; l++) {
-          let sum = nums[i] + nums[j] + nums[k] + nums[l];
-          if(sum > target) break;
-          if(sum === target && !set.has([nums[i], nums[j], nums[k], nums[l]].toString())) {
-            set.add([nums[i], nums[j], nums[k], nums[l]].toString());
-            res.push([nums[i], nums[j], nums[k], nums[l]]);
-          }
+var fourSum = function (nums, target) {
+  //sort
+  nums = nums.sort((a, b) => a - b)
+  let len = nums.length
+  let res = []
+  for (let i = 0; i < len - 3; i++) {
+    //avoid repetitive values
+    if (i > 0 && nums[i] === nums[i - 1]) continue
+    for (let j = i + 1; j < len - 2; j++) {
+      //avoid repetitive values
+      if (j !== i + 1 && nums[j] === nums[j - 1]) continue
+      let l = j + 1
+      let r = len - 1
+      while (l < r) {
+        let sum = nums[i] + nums[j] + nums[l] + nums[r]
+        if (sum === target) {
+          res.push([nums[i], nums[j], nums[l], nums[r]])
+          //avoid repetitive values
+          while (nums[l + 1] === nums[l]) l++
+          while (nums[r - 1] === nums[r]) r--
+          l++
+          r--
+        } else if (sum > target) {
+          r--
+        } else {
+          l++
         }
       }
     }
   }
-  return res;
+  return res
 };
 // @lc code=end
-
