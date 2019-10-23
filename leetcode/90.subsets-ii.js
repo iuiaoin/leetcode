@@ -10,31 +10,22 @@
  * @return {number[][]}
  */
 /**
- * 思路：采用递归的方式来遍历nums，若在set中没出现过则推入结果中
+ * 思路：先将nums排序，采用递归(回溯)的方式来遍历nums, 跳过相同的数字来避免重复
  */
 var subsetsWithDup = function(nums) {
+  nums.sort();
   let len = nums.length;
-  let res = [[]];
-  let set = new Set();
-  for(let i = 1; i <= len; i++) {
-    helper(nums, set, i, [], res, 0);
-  }
+  let res = [];
+  helper(nums, 0, [], res);
   return res;
 
-  function helper(nums, set, k, cur, res, start) {
-    if(cur.length > k) return;
-    if(cur.length === k) {
-      let clone = cur.slice();
-      let str = clone.sort().toString();
-      if(!set.has(str)) {
-        res.push(clone);
-        set.add(str);
-      }
-      return;
-    }
+  function helper(nums, start, cur, res) {
+    let clone = cur.slice();
+    res.push(clone);
     for(let i = start; i < len; i++) {
+      if(i > start && nums[i] === nums[i - 1]) continue;
       cur.push(nums[i]);
-      helper(nums, set, k, cur, res, i + 1);
+      helper(nums, i + 1, cur, res);
       cur.pop();
     }
   }
