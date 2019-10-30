@@ -11,32 +11,32 @@
  * @return {number}
  */
 /**
- * 思路：遍历数组，将char和count存入map，不同的任务分别执行，不满足n的加idle，得到最后执行时间
+ * 思路：把tasks放入对应的slots，首先找到数量最多的任务A,例如n = 2, A ? ? A ? ? A, 将剩余的任务放入slots，空出来的为idle, 则结果为 tasks.length + num(idle), 关键是算出idle的数量
  */
 var leastInterval = function (tasks, n) {
-  let map = new Map();
-  tasks.forEach(char => {
-    let count = map.get(char) || 0;
-    map.set(char, count + 1);
-  })
-  let arr = [];
-  while (map.size > 0) {
-    for (let m of map) {
-      let [char, count] = m;
-      if (count === 0) {
-        map.delete(m[0]);
-        continue;
-      };
-      map.set(char, count - 1);
-      let preIndex = arr.lastIndexOf(char);
-      if (preIndex === -1) {
-        arr.push(char);
-      } else {
-        while(arr.length - preIndex - 1 < n) arr.push('idle');
-        arr.push(char);
-      }
+  let counter = new Array(26).fill(0);
+  let max = 0;
+  let maxCount = 0;
+  
+  function charCode(c) {
+    return c.charCodeAt(0) - 'A'.charCodeAt(0);
+  }
+
+  for(let i = 0; i < tasks.length; i++) {
+    let index = charCode(tasks[i]);
+    counter[index]++;
+    if(max === counter[index]) {
+      maxCount++;
+    } else if(max < counter[index]) {
+      max = counter[index];
+      maxCount = 1;
     }
   }
-  return arr.length;
+
+  let slotsPart = max - 1;
+  let emptySlots = slotsPart * (n - ( maxCount - 1 ));
+  let availableTasks = tasks.length - maxCount * max;
+  let idles = Math.max(emptySlots - availableTasks, 0);
+  return tasks.length + idles;
 };
 // @lc code=end
