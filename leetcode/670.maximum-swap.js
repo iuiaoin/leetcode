@@ -10,27 +10,22 @@
  * @return {number}
  */
 /**
- * 思路：从左到右遍历num，找到非递减的数，存起来和后面的数比较取最大值，以这个值和左边比它小的值交换,遇到相等的数指针后移
+ * 思路：使用buckets存num中0~9的最后出现的位置，遍历num若出现从9开始的比当前数大的数，则和其交换
  */
 var maximumSwap = function (num) {
-  let swapMax = -Infinity;
-  let swapIdx = -1;
-  let arr = (num + '').split('');
-  for (let i = 0; i < arr.length - 1; i++) {
-    if (arr[i] < arr[i + 1] && swapMax < arr[i + 1]) {
-      swapMax = arr[i + 1];
-      swapIdx = i + 1;
-    }
-    if(swapMax === arr[i + 1]) swapIdx = i + 1;
+  let arr = num.toString().split('');
+  let buckets = new Array(10).fill(0);
+  for(let i = 0; i < arr.length; i++) {
+    buckets[arr[i]] = i;
   }
-  if (swapMax === -Infinity) return num;
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] < swapMax) {
-      let temp = arr[i];
-      arr[i] = swapMax;
-      arr[swapIdx] = temp;
-      return parseInt(arr.join(''));
+  for(let i = 0; i < arr.length; i++) {
+    for(let j = 9; j > arr[i]; j--) {
+      if(buckets[j] > i) {
+        [arr[i], arr[buckets[j]]] = [arr[buckets[j]], arr[i]];
+        return parseInt(arr.join(''));
+      }
     }
   }
+  return num;
 };
 // @lc code=end
