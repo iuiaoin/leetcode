@@ -11,34 +11,27 @@
  * @return {number[]}
  */
 /**
- * 思路：二分查找，找到之后向左右遍历找到不重复的，否则返回-1
+ * 思路：将target加减0.5作为新的target，然后在nums中使用二分查找target的值
  */
 var searchRange = function(nums, target) {
+  let l = bs(nums, target - 0.5);
+  let r = bs(nums, target + 0.5);
+  if(l === r) return [-1, -1];
+  return [l, r - 1];
+};
+
+function bs(nums, target) {
   let l = 0;
   let r = nums.length - 1;
-  let pos = -1;
-  let res = [-1, -1];
   while(l <= r) {
     let mid = (l + r) >> 1;
     if(nums[mid] < target) {
       l = mid + 1;
-    } else if(nums[mid] > target) {
-      r = mid - 1;
     } else {
-      pos = mid;
-      break; 
+      r = mid - 1;
     }
-  }
-  if(pos === -1) return res;
-  for(let i = pos; i >= 0; i--) {
-    if(nums[i] !== target) break;
-    res[0] = i;
-  }
-  for(let j = pos; j < nums.length; j++) {
-    if(nums[j] > target) break;
-    res[1] = j;
-  }
-  return res;
-};
+  };
+  return l;
+}
 // @lc code=end
 
