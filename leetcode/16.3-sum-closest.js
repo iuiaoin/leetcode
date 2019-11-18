@@ -11,22 +11,28 @@
  * @return {number}
  */
 /**
- * 思路：遍历nums,找出所有3数的和取绝对值最小的
+ * 思路：先将nums排序，使用3个指针分别指向currnet元素，next元素和last元素，若3者之和小于target，则next后移，否则last前移，返回与target差最小的sum
  */
 var threeSumClosest = function(nums, target) {
   let len = nums.length;
-  if(!len) return -1;
+  if(len < 3) return -1;
+  nums.sort((a, b) => a - b);
   let dis = Infinity;
-  let res = -1;
+  let res;
   for(let i = 0; i < len - 2; i++) {
-    for(let j = i + 1; j < len - 1; j++) {
-      for(let k = j + 1; k < len; k++) {
-        let sum = nums[i] + nums[j] + nums[k];
-        let curDis = Math.abs(sum - target);
-        if(curDis < dis) {
-          dis = curDis;
-          res = sum;
-        }
+    let start = i + 1;
+    let end = len - 1;
+    while(start < end) {
+      let sum = nums[i] + nums[start] + nums[end];
+      if(sum === target) return sum;
+      if(sum < target) {
+        start++;
+      } else {
+        end--;
+      }
+      if(Math.abs(sum - target) < dis) {
+        dis = Math.abs(sum - target);
+        res = sum;
       }
     }
   }
