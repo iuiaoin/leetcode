@@ -11,30 +11,24 @@
  * @return {number[][]}
  */
 /**
- * 思路：采用bfs，往数组中推入1 ~ n-1, 接着对于数组中的每个数推入其后的数
+ * 思路：采用回溯，从1开始往数组中添加之后的数，满足条件时添加到结果中
  */
 var combine = function(n, k) {
   let res = [];
-  let queue = [];
-  for(let i = 1; i <= n - k + 1; i++) {
-    queue.push([i]);
-  }
-  while(queue.length) {
-    let len = queue.length;
-    for(let j = 0; j < len; j++) {
-      let arr = queue.shift();
-      let arrLen = arr.length;
-      if(arrLen === k) {
-        res.push(arr);
-        continue;
-      }
-      let lastNum = arr[arrLen - 1];
-      for(let l = lastNum + 1; l <= n - k + 1 + arrLen; l++) {
-        queue.push(arr.concat(l));
-      }
+  backtrack(res, [], 1, n, k);
+  return res;
+
+  function backtrack(res, cur, start, n, k ) {
+    if(k === 0) {
+      res.push(cur.slice());
+      return;
+    }
+    for(let i = start; i <= n - k + 1; i++) {
+      cur.push(i);
+      backtrack(res, cur, i + 1, n, k - 1);
+      cur.pop();
     }
   }
-  return res;
 };
 // @lc code=end
 
