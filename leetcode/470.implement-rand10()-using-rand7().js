@@ -10,6 +10,9 @@
  * @return {number} a random integer in the range 1 to 7
  */
 var rand10 = function() {
-  let val = rand7();
-  return Math.floor(val / 7 * 10);
+  let value = 40;
+  while(value >= 40) {
+    value = 7 * (rand7() - 1) + rand7() - 1
+  }
+  return value % 10 + 1;
 };
