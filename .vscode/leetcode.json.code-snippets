@@ -1,0 +1,13 @@
+{
+	"Print to console": {
+		"prefix": "lc",
+		"body": [
+      "/*",
+      "* @lc app=leetcode id=${1:207} lang=javascript",
+      "*",
+      "* [${2:207}] ${3:Course Schedule}",
+      "*/"
+		],
+		"description": "Log output to console"
+	}
+}
