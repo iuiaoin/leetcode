@@ -11,24 +11,20 @@
  * @return {number}
  */
 /**
- * 思路：使用回溯，数组倒序排列，从第一个数开始取
+ * 思路：
+ * state: dp[i]表示金额为i的面额组合数
+ * state transition: dp[i] = {dp[i - coin_1] + ... + dp[i - coin_k]}
+ * base case: dp[0] = 1
  */
 var change = function(amount, coins) {
-  let res = 0;
-  backtrack(amount, 0);
-  return res;
-  
-  function backtrack(amount, start) {
-    if(amount === 0) {
-      res++;
-    } else if(amount > 0) {
-      for(let i = start; i < coins.length; i++) {
-        amount -= coins[i];
-        backtrack(amount, i);
-        amount += coins[i];
-      }
+  let dp = new Array(amount+1).fill(0);
+  dp[0] = 1;
+  for(let i = 0; i < coins.length; i++) {
+    for(let j = coins[i]; j <= amount; j++) {
+      dp[j] += dp[j - coins[i]];
     }
   }
+  return dp[amount];
 };
 // @lc code=end
 
