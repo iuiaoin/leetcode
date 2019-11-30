@@ -12,21 +12,21 @@
  * @return {number[][]}
  */
 /**
- * 思路：对nums1, nums2分别取k个数, 若长度小于k则取全部，放入最小堆，取前k个pair
+ * 思路：对nums1取前k个数，与nums2[0]放入最小堆，然后以顶点的nums1中的值为新的值，nums2在原来的index(初始化为0)加一的值
  */
 var kSmallestPairs = function(nums1, nums2, k) {
   let res = [];
+  if(!nums1.length || !nums2.length || !k) return res;  
   let heap = new Heap((a, b) => (a[0] + a[1]) - (b[0] + b[1]));
-  let len1 = nums1.length < k ? nums1.length : k;
-  let len2 = nums2.length < k ? nums2.length : k;
-  for(let i = 0; i < len1; i++) {
-    for(let j = 0; j < len2; j++) {
-      heap.add([nums1[i], nums2[j]]);
-    }
+  for(let i = 0; i < nums1.length && i < k; i++) {
+    heap.add([nums1[i], nums2[0], 0]);
   }
-  let len = heap.size() < k ? heap.size() : k;
-  for(let l = 0; l < len; l++) {
-    res.push(heap.poll());
+  while(k > 0 && heap.size() > 0) {
+    k--;
+    let [u, v, index] = heap.poll();
+    res.push([u, v]);
+    if(index === nums2.length - 1) continue;
+    heap.add([u, nums2[index + 1], index + 1]);
   }
   return res;
 };
