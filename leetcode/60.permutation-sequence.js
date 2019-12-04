@@ -11,31 +11,25 @@
  * @return {string}
  */
 /**
- * 思路：按顺序举出排列，输出第k个
+ * 思路：模式查找，将在n中找到第k个转化为在n-1中找第k%(n-1)!个
  */
 var getPermutation = function(n, k) {
-  let arr = [];
-  for(let i = 1; i <= n; i++) {
-    arr.push(i);
+  let fac = [1];
+  let nums = [];
+  for(let i = 1; i <= n; i++ ) {
+    fac[i] = fac[i - 1] * i;
+    nums.push(i);
   }
-  let res = '';
-  backtrack(arr, []);
-  return res;
-  
-  function backtrack(arr, cur) {
-    if(cur.length === n) {
-      k--;
-      if(k === 0) {
-        return res = cur.join('');
-      }
-    }
-    for(let i = 0; i < n; i++) {
-      if(cur.indexOf(arr[i]) > -1) continue;
-      cur.push(arr[i]);
-      backtrack(arr, cur);
-      cur.pop();
-    }
+  k--;
+  let res = [];
+  let j = 1;
+  while(res.length < n) {
+    let index = Math.floor(k / fac[n - j]);
+    k = k % fac[n - j];
+    res.push(nums.splice(index, 1)[0]);
+    j++;
   }
+  return res.join('');
 };
 // @lc code=end
 
