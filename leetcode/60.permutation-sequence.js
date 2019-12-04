@@ -18,12 +18,22 @@ var getPermutation = function(n, k) {
   for(let i = 1; i <= n; i++) {
     arr.push(i);
   }
+  let res = '';
+  backtrack(arr, []);
+  return res;
   
-  function backtrack(arr, start) {
-    for(let i = start; i < n; i++) {
-      [arr[i], arr[start]] = [arr[start], arr[i]];
-      backtrack(arr, i + 1);
-      [arr[i], arr[start]] = [arr[start], arr[i]];
+  function backtrack(arr, cur) {
+    if(cur.length === n) {
+      k--;
+      if(k === 0) {
+        return res = cur.join('');
+      }
+    }
+    for(let i = 0; i < n; i++) {
+      if(cur.indexOf(arr[i]) > -1) continue;
+      cur.push(arr[i]);
+      backtrack(arr, cur);
+      cur.pop();
     }
   }
 };
