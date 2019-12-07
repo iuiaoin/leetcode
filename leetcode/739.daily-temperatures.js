@@ -10,20 +10,17 @@
  * @return {number[]}
  */
 /**
- * 思路：对于每一个温度，向后找比他大的数字
+ * 思路：使用栈存温度，每次拿新元素与栈顶元素比较
  */
 var dailyTemperatures = function(T) {
-  let res = [];
+  let stack = [];
+  let res = new Array(T.length).fill(0);
   for(let i = 0; i < T.length; i++) {
-    let found = false;
-    for(let j = i + 1; j < T.length; j++) {
-      if(T[i] < T[j]) {
-        res.push(j - i);
-        found = true;
-        break;
-      }
+    while(stack.length && T[i] > T[stack[stack.length - 1]]) {
+      let index = stack.pop();
+      res[index] = i - index;
     }
-    if(!found) res.push(0);
+    stack.push(i);
   }
   return res;
 };
