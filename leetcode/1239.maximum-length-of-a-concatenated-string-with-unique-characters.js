@@ -21,10 +21,10 @@ var maxLength = function(arr) {
     res = Math.max(cur.length, res);
     for(let i = start; i < arr.length; i++) {
       if(isUnique(cur + arr[i])) {
-        let len = cur.length;
+        let temp = cur;
         cur += arr[i];
         backtrack(cur, i + 1);
-        cur = cur.slice(0, len);
+        cur = temp;
       }
     }
   }
