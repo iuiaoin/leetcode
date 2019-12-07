@@ -10,34 +10,33 @@
  * @return {number}
  */
 /**
- * 思路：维护一个长度为2的队列，保存对应字符的个数，统计最大值
+ * 思路：使用滑动窗口，map存字符出现的最后位置
  */
-var lengthOfLongestSubstringTwoDistinct = function(s) {
+var lengthOfLongestSubstringTwoDistinct = function (s) {
   let map = new Map();
+  if (s.length < 1) return 0;
+  let l = 0;
+  let r = 0;
   let res = 0;
-  for(let i = 0; i < s.length; i++) {
-    if(map.has(s[i])) {
-      let num = map.get(s[i])[0] + 1;
-      map.delete(s[i]);
-      map.set(s[i], [num, i]);
-    } else {
-      if(map.size === 2) {
-        let iterator = map.keys();
-        let key1 = iterator.next().value;
-        let index = map.get(key1)[1];
-        let key2 = iterator.next().value;
-        map.set(key2, [i - index - 1,map.get(key2)[1]]);
-        map.delete(key1);
+  while (r < s.length) {
+    if (map.size <= 2) {
+      map.set(s[r], r);
+      r++;
+    }
+    if (map.size > 2) {
+      let left = Infinity;
+      let char = '';
+      for (let [key, value] of map) {
+        if (value < left) {
+          left = value;
+          char = key;
+        }
       }
-      map.set(s[i], [1, i]);
+      l = left + 1;
+      map.delete(char);
     }
-    let len = 0;
-    for(let [key, value] of map) {
-      len += value[0];
-    }
-    res = Math.max(res, len);
+    res = Math.max(res, r - l);
   }
   return res;
 };
 // @lc code=end
-
