@@ -14,18 +14,20 @@
 var maxLength = function(arr) {
   if(!arr.length) return 0;
   let res = 0;
-  for(let i = 0; i < arr.length; i++) {
-    let s = arr[i];
-    if(!isUnique(s)) continue;
-    res = Math.max(res, s.length);
-    for(let j = i + 1; j < arr.length; j++) {
-      if(isUnique(s + arr[j])) {
-        s += arr[j];
-        res = Math.max(res, s.length);
+  backtrack('', 0);
+  return res;
+
+  function backtrack(cur, start) {
+    res = Math.max(cur.length, res);
+    for(let i = start; i < arr.length; i++) {
+      if(isUnique(cur + arr[i])) {
+        let len = cur.length;
+        cur += arr[i];
+        backtrack(cur, i + 1);
+        cur = cur.slice(0, len);
       }
     }
   }
-  return res;
 };
 
 function isUnique(s) {
