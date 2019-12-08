@@ -15,12 +15,12 @@
 var nextGreaterElements = function(nums) {
   let len = nums.length;
   let res = new Array(len).fill(-1);
-  nums = nums.concat(nums);
   let stack = [];
-  for(let i = 0; i < nums.length; i++) {
-    while(stack.length && nums[stack[stack.length - 1]] < nums[i]) {
+  for(let i = 0; i < 2 * len; i++) {
+    let num = nums[i % len];
+    while(stack.length && nums[stack[stack.length - 1]] < num) {
       let val = stack.pop();
-      res[val] = nums[i];
+      res[val] = num;
     }
     if(i < len) stack.push(i);
   }
