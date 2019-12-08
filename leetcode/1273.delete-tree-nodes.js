@@ -11,25 +11,13 @@
  * @return {number}
  */
 /**
- * 思路：遍历parent, 存储父子节点，dfs计算每个子树的和
+ * 思路：由于parent的index一定比本身的小，所以倒序遍历parent，累加子树值的和并计数(其实就是dp)
  */
 var deleteTreeNodes = function (nodes, parent, value) {
-  let map = {};
-  for (let i = 1; i < nodes; i++) {
-    let val = parent[i];
-    map[val] = (map[val] || []).concat(i);
-  };
-  return dfs(0)[1];
-
-  function dfs(i) {
-    let arr = map[i] || [];
-    let sum = value[i];
-    let count = 1;
-    for (let j = 0; j < arr.length; j++) {
-      let [s, c] = dfs(arr[j]);
-      sum += s;
-      count += c;
-    }
-    return [sum, sum === 0 ? 0 : count];
+  let res = new Array(nodes).fill(0);
+  for(let i = nodes - 1; i > 0; i--) {
+    value[parent[i]] += value[i];
+    res[parent[i]] += value[i] === 0 ? 0 : res[i] + 1;
   }
+  return res[0] === 0 ? 0 : res[0] + 1;
 };
