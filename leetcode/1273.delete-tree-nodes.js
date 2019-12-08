@@ -14,42 +14,22 @@
  * 思路：遍历parent, 存储父子节点，dfs计算每个子树的和
  */
 var deleteTreeNodes = function (nodes, parent, value) {
-  let map = new Map();
-  for (let i = nodes - 1; i > 0; i--) {
+  let map = {};
+  for (let i = 1; i < nodes; i++) {
     let val = parent[i];
-    if (map.has(val)) {
-      map.get(val).push(i);
-    } else {
-      map.set(val, [i])
-    }
+    map[val] = (map[val] || []).concat(i);
   };
-  getValue(0);
-  let res = 0;
-  dfs(0);
-  return res;
+  return dfs(0)[1];
 
   function dfs(i) {
-    if (value[i] === 0) return;
-    res++;
-    if (map.has(i)) {
-      let arr = map.get(i);
-      for (let j = 0; j < arr.length; j++) {
-        dfs(arr[j]);
-      }
+    let arr = map[i] || [];
+    let sum = value[i];
+    let count = 1;
+    for (let j = 0; j < arr.length; j++) {
+      let [s, c] = dfs(arr[j]);
+      sum += s;
+      count += c;
     }
-  }
-
-  function getValue(i) {
-    if (!map.has(i)) {
-      return value[i];
-    } else {
-      let sum = value[i];
-      let arr = map.get(i);
-      for (let j = 0; j < arr.length; j++) {
-        sum += getValue(arr[j]);
-      }
-      value[i] = sum;
-      return sum;
-    }
+    return [sum, sum === 0 ? 0 : count];
   }
 };
