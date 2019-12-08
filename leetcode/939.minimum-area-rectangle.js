@@ -10,11 +10,10 @@
  * @return {number}
  */
 /**
- * 思路：用map存储x,y坐标，寻找构成的矩形中的最小值
+ * 思路：用map存坐标，遍历points，寻找对角线的点，然后在map中查找是否有对应的另外两个点，如果有则将其作为候选矩形
  */
 var minAreaRect = function(points) {
   let map = {};
-  let res = Infinity;
   for(let i = 0; i < points.length ;i++) {
     let [x, y] = points[i];
     if(map[x]) {
@@ -23,23 +22,14 @@ var minAreaRect = function(points) {
       map[x] = new Set([y]);
     }
   }
-  let arr = Object.keys(map);
-  for(let i = 0; i < arr.length - 1; i++) {
-    for(let j = i + 1; j < arr.length; j++) {
-      let x1 = arr[i];
-      let x2 = arr[j];
-      let temp = [];
-      for(v of map[x1]) {
-        if(map[x2].has(v)) temp.push(v);
-      }
-      if(temp.length > 1) {
-        let len = Infinity;
-        for(let k = 0; k < temp.length - 1; k++) {
-          for(let l = k + 1; l < temp.length; l++) {
-            len = Math.min(len, Math.abs(temp[l] - temp[k]));
-          }
-        }
-        res = Math.min(res, len * Math.abs(x2 - x1));
+  let res = Infinity;
+  for(let i = 0; i < points.length - 1; i++) {
+    for(let j = i + 1; j < points.length; j++) {
+      let p1 = points[i];
+      let p2 = points[j];
+      if(p1[0] === p2[0] || p1[1] === p2[1]) continue;
+      if(map[p1[0]].has(p2[1]) && map[p2[0]].has(p1[1])) {
+        res = Math.min(res, Math.abs(p1[0] - p2[0]) * Math.abs(p1[1] - p2[1]));
       }
     }
   }
