@@ -3,6 +3,8 @@
  * @param {number[]} nums 
  * @return {number[][]}
  */
+
+// nums中元素不相同
 function permute(nums) {
   let res = [];
   let len = nums.length;
@@ -19,3 +21,7 @@ function permute(nums) {
     } 
   }
 }
+
+// nums中有重复元素
+
+

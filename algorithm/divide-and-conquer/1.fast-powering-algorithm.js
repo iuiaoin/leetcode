@@ -1,12 +1,13 @@
 /**
  * 快速算次方
- * O(logn) 递归实现
+ * O(logn) 
  * @param {number} base 
  * @param {number} power
  * @return {number}
  */
 /**
  * 思路：x^8 = x^4 * x^4
+ * 递归实现
  */
 function fastPower(base, power) {
   if(power === 0) return 1;
@@ -18,6 +19,9 @@ function fastPower(base, power) {
   return mult * mult * base;
 }
 
+/**
+ * 迭代实现
+ */
 function fastPower(base, power) {
   let res = 1;
   let mult = base;
