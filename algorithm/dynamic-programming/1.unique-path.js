@@ -5,6 +5,11 @@
  * @param {number} n
  * @return {number}
  */
+/**
+ * dp[i][j]表示i, j的路径数
+ * dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+ * dp[i][0] = dp[0][j] = 1
+ */
 function uniquePaths(m, n) {
   let dp = new Array(m).fill(null).map(v => new Array(n).fill(0));
   dp[0].fill(1);
