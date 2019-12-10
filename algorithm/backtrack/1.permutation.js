@@ -1,5 +1,6 @@
 /**
  * 排列
+ * 描述：给定数组nums, 输出它的所有排列
  * @param {number[]} nums 
  * @return {number[][]}
  */

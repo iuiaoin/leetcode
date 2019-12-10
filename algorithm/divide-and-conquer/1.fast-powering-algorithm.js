@@ -1,5 +1,6 @@
 /**
  * 快速算次方
+ * 描述：给定底和幂，在不使用Math的情况下计算次方
  * O(logn) 
  * @param {number} base 
  * @param {number} power
