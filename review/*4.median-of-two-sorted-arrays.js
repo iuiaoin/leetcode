@@ -32,34 +32,44 @@
 // };
 
 var findMedianSortedArrays = function (nums1, nums2) {
-  if(nums1.length > nums2.length) [nums1, nums2] = [nums2, nums1];
   let m = nums1.length;
   let n = nums2.length;
+  if(m > n) {
+    [m, n] = [n, m];
+    [nums1, nums2] = [nums2, nums1];
+  }
   let len = m + n;
-  let half = len % 2 ? Math.floor(len / 2) - 1 : Math.floor(len / 2) - 2;
+  let half = len + 1 >> 1;
   let l = 0;
-  let r = m - 1;
-  if(m === 0 || nums1[m - 1] <= nums2[0]) {
-    if(len % 2) {
-      return nums2[Math.floor(len / 2) - m];
-    } else {
-      if(m === n) return (nums1[m - 1] + nums2[0]) / 2;
-      let index = Math.floor(len / 2) - m - 1;
-      return (nums2[index] + nums2[index+1]) / 2;
-    }
-  }
+  let r = m;
+  let odd = len % 2;
+  let maxLeft = 0;
+  let minRight = 0;
   while(l <= r) {
-    let mid = l + r >> 1;
-    if(nums1[mid] > nums2[half - mid + 1]) {
-      r = mid - 1;
+    let i = l + r >> 1;
+    let j = half - i;
+    if(nums1[i - 1] > nums2[j]) {
+      r = i - 1;
+    } else if(nums1[i] < nums2[j - 1]) {
+      l = i + 1;
     } else {
-      l = mid + 1;
+      if(i === 0) {
+        maxLeft = nums2[j - 1];
+      } else if(j === 0) {
+        maxLeft = nums1[i - 1];
+      } else {
+        maxLeft = Math.max(nums1[i - 1], nums2[j - 1]);
+      }
+      if(odd) return maxLeft;
+      if(i === m) {
+        minRight = nums2[j];
+      } else if(j === n) {
+        minRight = nums1[i];
+      } else {
+        minRight = Math.min(nums1[i], nums2[j]);
+      }
+      return (maxLeft + minRight) / 2;
     }
-  }
-  if(len % 2) {
-    return Math.max(nums1[r] === undefined ? -Infinity :nums1[r], nums2[half - r]);
-  } else {
-    return (Math.max(nums1[r], nums2[half - r]) + Math.min(nums1[r + 1], nums2[half - r + 1])) / 2;
   }
 }
 
