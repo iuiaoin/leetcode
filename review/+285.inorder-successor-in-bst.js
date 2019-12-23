@@ -18,7 +18,6 @@
  * @return {TreeNode}
  */
 var inorderSuccessor = function(root, p) {
-  let found = false;
   let res = null;
   dfs(root);
   return res;
@@ -26,8 +25,7 @@ var inorderSuccessor = function(root, p) {
   function dfs(node) {
     if(node) {
       dfs(node.left);
-      if(found && !res) return res = node;
-      if(node === p) found = true;
+      if(node.val > p.val && !res) return res = node;
       dfs(node.right);
     }
   }
