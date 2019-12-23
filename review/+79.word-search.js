@@ -28,6 +28,7 @@ var exist = function (board, word) {
     board[i][j] = '*';
     if (dfs(i - 1, j, index + 1) || dfs(i + 1, j, index + 1) || dfs(i, j - 1, index + 1) || dfs(i, j + 1, index + 1)) return true;
     board[i][j] = temp;
+    return false;
   }
 };
 // @lc code=end
