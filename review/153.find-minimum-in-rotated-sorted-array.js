@@ -16,7 +16,7 @@ var findMin = function(nums) {
   let r = len - 1;
   while(l <= r) {
     let mid = l + r >> 1;
-    if(nums[mid] >= nums[0] && nums[mid] > nums[len - 1]) {
+    if(nums[mid] > nums[len - 1]) {
       l = mid + 1;
     } else{
       r = mid - 1;
