@@ -18,7 +18,19 @@
  * @return {TreeNode}
  */
 var buildTree = function(preorder, inorder) {
-  
+  let i = 0;
+  return dfs(0, preorder.length - 1);
+
+  function dfs(l, r) {
+    if(l > r) return null;
+    let val =  preorder[i];
+    i++;
+    let index = inorder.indexOf(val);
+    let root = new TreeNode(val);
+    root.left = dfs(l, index - 1);
+    root.right = dfs(index + 1, r);
+    return root;
+  }
 };
 // @lc code=end
 
