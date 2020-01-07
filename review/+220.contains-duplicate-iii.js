@@ -26,7 +26,23 @@
 // };
 
 
-var containsNearbyAlmostDuplicate = function(nums, k, t) {
+var containsNearbyAlmostDuplicate = function (nums, k, t) {
+  let len = nums.length;
+  let map = {};
+  if(t < 0) return false;
+  for (let i = 0; i < len; i++) {
+    let bucket = Math.floor(nums[i] / (t + 1));
+    if (map[bucket] !== void 0 ||
+      map[bucket - 1] !== void 0 && nums[i] - map[bucket - 1] <= t ||
+      map[bucket + 1] !== void 0 && map[bucket + 1] - nums[i] <= t) {
+      return true;
+    }
+    map[bucket] = nums[i];
+    if(i >= k) {
+      let lastBucket = Math.floor(nums[i - k] / (t + 1));
+      delete map[lastBucket];
+    }
+  }
+  return false;
 };
 // @lc code=end
-
