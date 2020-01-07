@@ -1,6 +1,6 @@
 /**
  * 组合
- * 描述：给定整数n, k，输出由1~n组成的k个数的左右可能的组合
+ * 描述：给定整数n, k，输出由1~n组成的长度为k的数的所有可能的组合
  * @param {number} n
  * @param {number} k
  * @return {number[][]}
