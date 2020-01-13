@@ -10,7 +10,7 @@ function debounce(event, time) {
   let timer = null;
   return function(...args) {
     clearTimeout(timer);
-    setTimeout(() => {
+    timer = setTimeout(() => {
       event.apply(this, args);
     }, time);
   }
