@@ -169,6 +169,9 @@ var multiply = function (num1, num2) {
     - 明确函数作用/返回值
     - 寻找递归结束条件
     - 找出函数等价关系式
+6. 递归中，需要传给子节点的数据放入参数中，需要从子节点获取的作为返回值
+7. 树中需要同时向父和子遍历的，可给节点标记parent并配合set来遍历【863】
+8. 利用pos(有时需处理溢出)来计算树的宽度或验证完全二叉树【958、662】
 
 ### Topic
 1. sliding window
@@ -199,6 +202,11 @@ DP的核心思想：尽量缩小可能解空间。
 - 每个阶段的最优状态是由之前所有阶段的状态的组合得到的->搜索；
 - 每个阶段的最优状态可以从之前某个阶段的某个或某些状态直接得到而不管之前这个状态是如何得到的->动态规划。
 
+```
+1. state
+2. state trasition
+3. base case
+```
 
 #### LCS
 ```js
@@ -239,25 +247,28 @@ binary search(一般):
 - r从arr.length 开始, l = mid + 1
 > l、r都停在要找的值右, 若值大于最大会在数组外
 
-#### Set 和 Map的区别
-- Set 类似数组存储值，但不重复
-- Map 类似对象，但key可以是对象
 
-实例的属性和方法：
-
-Set | Map|
----|---|
-size|size|
-clear()|clear()
-delete(value)|delete(key)
-forEach(callbackFn[, thisArg])|forEach(callbackFn[, thisArg])
-has(value)|has(key)
-keys()|keys()
-values()|values()
-\[@@iterator\]()|\[@@iterator\]()
-add(value)|get(key)
-||set(key, value)
-||entries()
 
 #### 数组里面第k个大的数字/前k个重复次数最多的数字
 这类问题基本上可以用heap来优化，因为堆的大小为k，所以一般O(nlogk)
+
+#### 比较树的结构(序列化)
+树的遍历加上对null值的保存可以确保唯一的树结构
+
+#### 一些DP问题可以转化为找子集和的问题(将数组分割成两个和相同的子集、和等于target)【416、494】
+
+#### 使用栈的字符串处理问题【394】
+基本上就是分情况讨论，使用栈的特性，理清思路
+
+#### 0/1背包
+dp[i][j]表示前i个物品放入容量为j的背包中可以获得的最大价值, w为重量，v为价值
+转移方程：`$dp[i][j] = max{(dp[i-1][j], f[i-1][j-w[i]]+v[i])} $`
+
+#### 链表
+对于链表，初始化空的头节点是常用的存储节点的方式  
+let dummy = new ListNode();
+let cur = dummy;
+dummy.next = cur;
+
+#### 克隆图或有循环的链表
+clone有循环引用的图或数都可以用Map实现，key存要复制的节点，value构造新节点
